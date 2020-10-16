@@ -10,15 +10,18 @@ class Twinkle:
     Call run() before using any sip methods.
     """
 
-    def __init__(self, cmd: List[str] = None):
+    def __init__(self, cmd: List[str] = None, debug=False):
         """
 
-        :param cmd: command to execute. defaults to ['twinkle', '-c']
+        :param cmd: a command to execute. defaults to ['twinkle', '-c']
+        :param debug: print
         """
 
         if cmd is None:
             cmd = ['twinkle', '-c']
         self.cmd = cmd
+
+        self.DEBUG = debug
 
         self.proc: Popen = None
         self.stdout_reader: Process = None
@@ -31,14 +34,23 @@ class Twinkle:
         while True:
             if self._stop_reading_event.is_set():
                 break
-            line = self.proc.stdout.readline()
-            yield line.decode()
+            line = self.proc.stdout.readline().decode()
+
+            yield line
 
     def stop_reading(self) -> None:
         """Ask stdout reader process to exit."""
 
         self._stop_reading_event.set()
-        self.stdout_reader.join()
+        if self.stdout_reader.is_alive():
+            self.stdout_reader.join()
+
+    def parse_output(self) -> None:
+        """Search for patterns in twinkle output and call needed callbacks."""
+
+        for line in self.read_stdout():
+            if self.DEBUG:
+                print(line)
 
     def run(self) -> None:
         """Start Twinkle and stdout reader processes."""
@@ -50,7 +62,7 @@ class Twinkle:
             stdout=PIPE,
             stderr=PIPE
         )
-        self.stdout_reader = Process(target=self.read_stdout)
+        self.stdout_reader = Process(target=self.parse_output)
         self.stdout_reader.start()
 
     def send_command(self, command: str) -> None:
@@ -70,7 +82,7 @@ class Twinkle:
     ###############
 
     def call(self, dst: str) -> None:
-        raise NotImplementedError
+        self.send_command(f'call {dst}')
 
     def answer(self) -> None:
         raise NotImplementedError
@@ -88,7 +100,7 @@ class Twinkle:
         raise NotImplementedError
 
     def bye(self) -> None:
-        raise NotImplementedError
+        self.send_command('bye')
 
     def hold(self) -> None:
         raise NotImplementedError
@@ -103,7 +115,7 @@ class Twinkle:
         raise NotImplementedError
 
     def dtmf(self, digits: str) -> None:
-        raise NotImplementedError
+        self.send_command(f'dtmf {digits}')
 
     def redial(self) -> None:
         raise NotImplementedError
