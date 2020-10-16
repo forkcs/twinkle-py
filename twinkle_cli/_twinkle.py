@@ -8,6 +8,9 @@ class Twinkle:
     Twinkle CLI wrapper.
 
     Call run() before using any sip methods.
+    You can inherit from this class and redefine callbacks.
+
+    Twinkle version: 1.10.2 - 14 February 2018
     """
 
     def __init__(self, cmd: List[str] = None, debug=False):
@@ -76,6 +79,14 @@ class Twinkle:
 
         self.send_command('quit')
         self.stop_reading()
+
+    #############
+    # Callbacks #
+    #############
+
+    def on_call(self) -> None:
+        if self.DEBUG:
+            print('on_call() was called.')
 
     ###############
     # SIP Methods #
