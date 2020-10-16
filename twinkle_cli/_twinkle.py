@@ -1,6 +1,6 @@
-from typing import Iterator, List
-from subprocess import Popen, PIPE
 from multiprocessing import Process, Event
+from subprocess import Popen, PIPE
+from typing import Iterator, List
 
 
 class Twinkle:
@@ -64,3 +64,79 @@ class Twinkle:
 
         self.send_command('quit')
         self.stop_reading()
+
+    ###############
+    # SIP Methods #
+    ###############
+
+    def call(self, dst: str) -> None:
+        raise NotImplementedError
+
+    def answer(self) -> None:
+        raise NotImplementedError
+
+    def answerbye(self) -> None:
+        raise NotImplementedError
+
+    def reject(self) -> None:
+        raise NotImplementedError
+
+    def redirect(self, dst: str) -> None:
+        raise NotImplementedError
+
+    def transfer(self, dst: str) -> None:
+        raise NotImplementedError
+
+    def bye(self) -> None:
+        raise NotImplementedError
+
+    def hold(self) -> None:
+        raise NotImplementedError
+
+    def retrieve(self) -> None:
+        raise NotImplementedError
+
+    def conference(self) -> None:
+        raise NotImplementedError
+
+    def mute(self) -> None:
+        raise NotImplementedError
+
+    def dtmf(self, digits: str) -> None:
+        raise NotImplementedError
+
+    def redial(self) -> None:
+        raise NotImplementedError
+
+    def register(self) -> None:
+        raise NotImplementedError
+
+    def deregister(self) -> None:
+        raise NotImplementedError
+
+    def fetch_reg(self) -> None:
+        raise NotImplementedError
+
+    def options(self) -> None:
+        raise NotImplementedError
+
+    def line(self, number: int = None) -> None:
+        raise NotImplementedError
+
+    def dnd(self) -> None:
+        raise NotImplementedError
+
+    def auto_answer(self) -> None:
+        raise NotImplementedError
+
+    def user(self) -> None:
+        raise NotImplementedError
+
+    def zrtp(self) -> None:
+        raise NotImplementedError
+
+    def message(self, dst: int, text: str) -> None:
+        raise NotImplementedError
+
+    def presence(self) -> None:
+        raise NotImplementedError
