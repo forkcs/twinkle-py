@@ -96,70 +96,79 @@ class Twinkle:
         self.send_command(f'call {dst}')
 
     def answer(self) -> None:
-        raise NotImplementedError
+        self.send_command('answer')
 
     def answerbye(self) -> None:
-        raise NotImplementedError
+        self.send_command('answerbye')
 
     def reject(self) -> None:
-        raise NotImplementedError
+        self.send_command('reject')
 
     def redirect(self, dst: str) -> None:
-        raise NotImplementedError
+        self.send_command(f'redirect {dst}')
 
     def transfer(self, dst: str) -> None:
-        raise NotImplementedError
+        self.send_command(f'transfer {dst}')
 
     def bye(self) -> None:
         self.send_command('bye')
 
     def hold(self) -> None:
-        raise NotImplementedError
+        self.send_command('hold')
 
     def retrieve(self) -> None:
-        raise NotImplementedError
+        self.send_command('retrieve')
 
     def conference(self) -> None:
-        raise NotImplementedError
+        self.send_command('conference')
 
     def mute(self) -> None:
-        raise NotImplementedError
+        self.send_command('mute')
 
     def dtmf(self, digits: str) -> None:
         self.send_command(f'dtmf {digits}')
 
     def redial(self) -> None:
-        raise NotImplementedError
+        self.send_command('redial')
 
     def register(self) -> None:
-        raise NotImplementedError
+        self.send_command('register')
 
     def deregister(self) -> None:
-        raise NotImplementedError
+        self.send_command('deregister')
 
     def fetch_reg(self) -> None:
-        raise NotImplementedError
+        self.send_command('fetch_reg')
 
-    def options(self) -> None:
-        raise NotImplementedError
+    def options(self, dst: str = None) -> None:
+        if dst is None:
+            dst = ''
+        self.send_command(f'options {dst}')
 
     def line(self, number: int = None) -> None:
-        raise NotImplementedError
+        if number is None:
+            number = ''
+        self.send_command(f'line {number}')
 
     def dnd(self) -> None:
-        raise NotImplementedError
+        self.send_command('dnd')
 
     def auto_answer(self) -> None:
-        raise NotImplementedError
+        self.send_command('auto_answer')
 
-    def user(self) -> None:
-        raise NotImplementedError
+    def user(self, name: str = None) -> None:
+        if name is None:
+            name = ''
+        self.send_command(f'user {name}')
 
-    def zrtp(self) -> None:
-        raise NotImplementedError
+    def zrtp(self, command: str) -> None:
+        zrtp_commands = ['encrypt', 'go-clear', 'confirm-sas', 'reset-sas']
+        if command not in zrtp_commands:
+            raise ValueError(f'Invalid command. Avaliable commands are: {zrtp_commands}.')
+        self.send_command(f'zrtp {command}')
 
     def message(self, dst: int, text: str) -> None:
-        raise NotImplementedError
+        self.send_command(f'message {dst} "{text}"')
 
-    def presence(self) -> None:
-        raise NotImplementedError
+    def presence(self, state: str) -> None:
+        self.send_command(f'presence {state}')
