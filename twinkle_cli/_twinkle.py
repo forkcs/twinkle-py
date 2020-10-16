@@ -17,7 +17,7 @@ class Twinkle:
         """
 
         :param cmd: a command to execute. defaults to ['twinkle', '-c']
-        :param debug: print
+        :param debug: print Twinkle input to console
         """
 
         if cmd is None:
