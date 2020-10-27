@@ -52,6 +52,8 @@ class Twinkle:
         """Search for patterns in twinkle output and call needed callbacks."""
 
         for line in self.read_stdout():
+            if line == '':
+                continue
             if self.DEBUG:
                 print(line)
 
